@@ -41,5 +41,18 @@ Titan Steelworks supplies structural and industrial steel products with optional
 - Custom/fabricated items non-returnable unless defective  
 - Replacement or credit issued for confirmed quality issues  
 
+## Hours & Availability
+- **Office Hours**: Mon–Fri, 7:00–17:00 MT  
+- **Holidays**: Closed on federal holidays (USA)  
+- **Order Placement**: Online/email orders accepted 24/7; processed next business day  
+- **Delivery Windows**:  
+  - Standard: Mon–Fri, 8:00–16:00 MT  
+  - **Weekend Delivery**: Available by prior arrangement; surcharge applies  
+  - **After-Hours Emergency**: Limited service available (contact sales for surcharge details)  
+- **Customer Support**:  
+  - General inquiries answered within 1 business day  
+  - Urgent order/support issues prioritized within 4 business hours  
+
 ---
-_Last updated: 2025-09-03_
+
+_Last updated: 2025-09-04_
