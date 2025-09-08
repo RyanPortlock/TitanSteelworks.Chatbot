@@ -27,7 +27,7 @@ The chatbot is designed to act as a **virtual sales and support representative**
 
 ---
 
-## Example Conversations (Planned)
+## Example Conversations
 - **Q: What kinds of beams do you sell?**  
   A: Titan Steelworks supplies I-Beams, H-Beams, and Wide Flange (W) beams, typically in ASTM A36, A992, and A572 Gr 50 grades. Sizes range from W6 to W36.  
 
