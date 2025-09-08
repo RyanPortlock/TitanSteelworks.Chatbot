@@ -20,6 +20,9 @@ The chatbot is designed to act as a **virtual sales and support representative**
   - `FAQ.md` → Customer Q&A  
 - **app/** → Chatbot implementation (to be added)  
   - `main.py` / `main.cs` → CLI or API chatbot  
+ - **src/titansteelworks/** → Python package with the chatbot implementation
+  - `gui.py` → Desktop GUI entrypoint
+  - `main.py` → Core chatbot logic and retrieval
 - **README.md** → Project overview  
 
 ---
@@ -41,6 +44,35 @@ The chatbot is designed to act as a **virtual sales and support representative**
 - **Step 2**: Build chatbot (CLI demo) that answers using docs 🚧  
 - **Step 3**: Add lightweight web UI & Docker support 🚧  
 - **Step 4**: Integrate GitHub Actions for automated testing 🚧  
+
+---
+
+## Running locally (dev)
+
+1) Create & activate a venv and install deps:
+
+```powershell
+py -3.11 -m venv .venv
+& .\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+2) Run the GUI from the repo root:
+
+```powershell
+& .\.venv\Scripts\python.exe .\src\titansteelworks\gui.py
+```
+
+3) Build a Windows EXE (one-file) using the provided script:
+
+```powershell
+& .\.venv\Scripts\Activate.ps1
+.\packaging\build_exe.ps1
+```
+
+Notes:
+- Keep your OpenAI API key out of source control; the app will prompt to save it to a local per-user `.env` when needed.
+- Use `packaging/clean_build.ps1` to remove build artifacts.
 
 ---
 

@@ -1,5 +1,6 @@
 # Environment files
 .env
+.venv/
 
 # Python cache
 __pycache__/
@@ -12,3 +13,15 @@ venv/
 # OS junk files
 .DS_Store
 Thumbs.db
+
+# Build artifacts
+dist/
+build/
+*.spec
+
+# IDE/editor
+.idea/
+.vscode/
+
+# Logs
+*.log
