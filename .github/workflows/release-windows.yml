@@ -4,6 +4,12 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release (optional). If empty, the pushed tag or current ref will be used.'
+        required: false
+        default: ''
 
 jobs:
   build-windows-exe:
@@ -27,20 +33,40 @@ jobs:
         shell: pwsh
 
       - name: Build EXE (packaging script)
-        run: .\packaging\build_exe.ps1 -Entry "src\titansteelworks\gui.py" -DistName "TitanSteelworks.Chatbot" -OneFile $true
+        run: |
+          $entry = 'src\titansteelworks\gui.py'
+          .\packaging\build_exe.ps1 -Entry $entry -DistName "TitanSteelworks.Chatbot" -OneFile $true
+        shell: pwsh
+
+      - name: Determine release tag and artifact names
+        id: meta
+        run: |
+          $inputTag = '${{ github.event.inputs.tag }}'
+          if ([string]::IsNullOrWhiteSpace($inputTag)) {
+            $tag = '${{ github.ref_name }}'
+          } else { $tag = $inputTag }
+          if ([string]::IsNullOrWhiteSpace($tag)) { $tag = 'local' }
+          $zipName = "TitanSteelworks.Chatbot-$tag-win-x64.zip"
+          $exeName = "TitanSteelworks.Chatbot.exe"
+          Write-Output "::set-output name=tag::$tag"
+          Write-Output "::set-output name=zip-name::$zipName"
+          Write-Output "::set-output name=exe-name::$exeName"
         shell: pwsh
 
       - name: Generate SHA256 checksum
         run: |
-          Get-FileHash -Path .\dist\TitanSteelworks.Chatbot.exe -Algorithm SHA256 | ForEach-Object { $_.Hash } | Out-File -FilePath .\dist\TitanSteelworks.Chatbot.exe.sha256 -Encoding ascii
+          $exe = Join-Path -Path $PWD -ChildPath ("dist\${{ steps.meta.outputs.exe-name }}")
+          Get-FileHash -Path $exe -Algorithm SHA256 | ForEach-Object { $_.Hash } | Out-File -FilePath (Join-Path -Path $PWD -ChildPath "dist\${{ steps.meta.outputs.exe-name }}.sha256") -Encoding ascii
         shell: pwsh
 
       - name: Zip EXE + checksum
         id: zip
         run: |
-          $zip = Join-Path -Path $PWD -ChildPath ("dist\TitanSteelworks.Chatbot.zip")
+          $exe = Join-Path -Path $PWD -ChildPath ("dist\${{ steps.meta.outputs.exe-name }}")
+          $sha = "$exe.sha256"
+          $zip = Join-Path -Path $PWD -ChildPath ("dist\${{ steps.meta.outputs.zip-name }}")
           if (Test-Path $zip) { Remove-Item $zip }
-          Compress-Archive -Path .\dist\TitanSteelworks.Chatbot.exe, .\dist\TitanSteelworks.Chatbot.exe.sha256 -DestinationPath $zip
+          Compress-Archive -Path $exe, $sha -DestinationPath $zip
           Write-Output "::set-output name=zip-path::$zip"
         shell: pwsh
 
@@ -48,10 +74,10 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         with:
-          tag_name: ${{ github.ref_name }}
-          release_name: ${{ github.ref_name }}
+          tag_name: ${{ steps.meta.outputs.tag }}
+          release_name: ${{ steps.meta.outputs.tag }}
           body: |
-            Automated Windows single-file EXE build for tag ${{ github.ref_name }}.
+            Automated Windows single-file EXE build for tag ${{ steps.meta.outputs.tag }}.
           draft: false
           prerelease: false
 
@@ -59,6 +85,6 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/TitanSteelworks.Chatbot.zip
-          asset_name: TitanSteelworks.Chatbot.zip
+          asset_path: ${{ steps.zip.outputs.zip-path }}
+          asset_name: ${{ steps.meta.outputs.zip-name }}
           asset_content_type: application/zip

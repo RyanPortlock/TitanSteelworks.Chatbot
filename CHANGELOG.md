@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+- No releases yet.
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
 ## [Unreleased]
 - Started changelog.
 - Added runtime API-key validation and in-GUI retry flow.

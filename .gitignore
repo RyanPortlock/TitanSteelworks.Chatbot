@@ -25,3 +25,6 @@ build/
 
 # Logs
 *.log
+
+# Local-only release instructions
+release_instructions.md

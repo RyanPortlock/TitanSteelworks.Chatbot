@@ -99,38 +99,13 @@ If you want to build locally for testing:
 ```powershell
 py -3.11 -m venv .venv
 & .\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-```
+# Titan Steelworks Chatbot
 
-2) Run the GUI (dev mode):
-```powershell
-& .\.venv\Scripts\python.exe .\src\titansteelworks\gui.py
-```
+Short project summary:
 
-3) Build a single-file Windows EXE locally:
-```powershell
-& .\.venv\Scripts\Activate.ps1
-.\packaging\build_exe.ps1
-```
+- Desktop demo chatbot implemented in Python (Tkinter GUI) that answers questions using the Markdown docs in `docs/`.
+- Source code lives under `src/titansteelworks/`. The GUI entrypoint is `src/titansteelworks/gui.py`.
+- Packaging: `packaging/build_exe.ps1` creates a single-file Windows EXE using PyInstaller.
+- CI: `.github/workflows/release-windows.yml` builds and uploads release artifacts when a tag is created or the workflow is manually dispatched.
 
-After a successful local build, the EXE will be at `dist\TitanSteelworks.Chatbot.exe` (this folder is ignored by git by default).
-
-If you need to distribute the build manually, create a zip including the EXE and a `.sha256` checksum, then upload it to a Release (recommended) or distribute out-of-band.
-
-## If you want binaries tracked in git (not recommended)
-- `dist/` is ignored by default. To force-add a built artifact (not recommended), use:
-```powershell
-git add -f .\dist\TitanSteelworks.Chatbot.exe
-git commit -m "Add built EXE"
-git push origin main
-```
-
-Better alternatives are using GitHub Releases (automated by CI), a package registry, or an external file host.
-
-## Optional next steps you can ask me to implement
-- Add `workflow_dispatch` to the CI so you can trigger a release build from the Actions UI.
-- Add a code-signing step (requires storing a signing certificate in GitHub Secrets).
-- Add Release Drafter or automated changelog generation.
-
-## License
-This project is for portfolio/demo purposes only. **Titan Steelworks Inc.** is a fictional company.
+This README is purposely minimal — see `release_instructions.md` (local, ignored) for step-by-step release notes and commands you can run on your machine.
